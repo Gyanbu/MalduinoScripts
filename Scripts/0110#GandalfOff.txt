@@ -1,0 +1,19 @@
+DELAY 1000
+GUI r
+DELAY 1000
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Resize PowerShell window
+STRING mode con cols=20 lines= 1
+ENTER
+REM Run payload in hidden window
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING Remove-Item C:\Windows\Sax.wav;
+STRING Unregister-ScheduledTask -TaskName Regedit -Confirm:$false
+STRING ";exit
+ENTER
