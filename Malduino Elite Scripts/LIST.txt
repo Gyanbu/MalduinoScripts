@@ -1,0 +1,19 @@
+___  ___      _     _       _               _____ _ _ _
+|  \/  |     | |   | |     (_)             |  ___| (_) | 
+| .  . | __ _| | __| |_   _ _ _ __   ___   | |__ | |_| |_ ___
+| |\/| |/ _` | |/ _` | | | | | '_ \ / _ \  |  __|| | | __/ _ \
+| |  | | (_| | | (_| | |_| | | | | | (_) | | |___| | | ||  __/
+\_|  |_/\__,_|_|\__,_|\__,_|_|_| |_|\___/  \____/|_|_|\__\___|
+--------------------------------------------------------------
+0000.ero | Uninstall Ethereum Miner
+0001.ero | Install Hydra Prank
+0010.ero | Uninstall Hydra Prank
+0011.ero | Install Tight vnc
+0100.ero | Uninstall Tight vnc
+0101.ero | Install JoJo opening every hour
+0110.ero | Uninstall JoJo opening every hour
+0111.ero | Install vlc listener
+1000.ero | Uninstall vlc listener
+         |
+1110.ero | Install(PenDrive) Ethereum Miner
+1111.ero | Install(Internet) Ethereum Miner
