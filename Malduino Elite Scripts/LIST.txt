@@ -14,6 +14,8 @@ ___  ___      _     _       _               _____ _ _ _
 0110.ero | Uninstall JoJo opening every hour
 0111.ero | Install vlc listener
 1000.ero | Uninstall vlc listener
+1001.ero | Install SecureShell
+1010.ero | Uninstall SecureShell
          |
 1110.ero | Install(PenDrive) Ethereum Miner
 1111.ero | Install(Internet) Ethereum Miner
