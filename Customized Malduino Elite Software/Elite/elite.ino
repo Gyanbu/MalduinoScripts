@@ -13,7 +13,7 @@
 #define debug true // <-- uncomment to turn serial output on
 #define CSpin 4 //Chip-Select of the SD-Card reader
 #define ledPin 3
-#define blinkInterval 500
+#define blinkInterval 50
 
 //Dip-Switch Pins:
 #define dip1 6
@@ -102,7 +102,12 @@ void runLine(){
     else if(equalsBuffer(0,space,"DELAY")) delay(getInt(buf,space));
     
     else if(equalsBuffer(0,space,"LED")) digitalWrite(ledPin, (getInt(buf,space)));
-    
+    else if(equalsBuffer(0,space,"EXIT")) while(0 == 0) {
+        ledOn = !ledOn;
+        digitalWrite(ledPin, ledOn);
+        delay(blinkInterval);
+    }
+
     else if(equalsBuffer(0,space,"STRING")){
       for(int i=space+1;i<bufSize;i++) KeyboardWrite(buf[i]);
     }
@@ -118,7 +123,7 @@ void runLine(){
     else if(equalsBuffer(0,space,"SCROLL")) Mouse.move(0,0,getInt(buf,space));
     else if(equalsBuffer(0,space,"RANDOMMIN")) rMin = getInt(buf,space);
     else if(equalsBuffer(0,space,"RANDOMMAX")) rMax = getInt(buf,space);
-    else if(equalsBuffer(0,space,"REM") || equalsBuffer(0,space,"REPEAT")){}
+    else if(equalsBuffer(0,space,"REM") || equalsBuffer(0,space,"//") || equalsBuffer(0,space,"REPEAT")){}
     else{
       runCommand(0,space);
       while(space >= 0 && space < bufSize){
@@ -243,7 +248,7 @@ void setup() {
     return;
   }
 
-  payload = SD.open(scriptName);
+  payload = SD.open(scriptName, FILE_READ);
   if(!payload){
 #ifdef debug 
     Serial.println("couldn't find script: '"+String(scriptName)+"'");
